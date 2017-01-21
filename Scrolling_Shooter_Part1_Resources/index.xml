@@ -1,0 +1,9 @@
+<entries>
+	<!-- Picture to be used in Tutorials dialog box -->
+	<Bitmap>GamePreview.png</Bitmap>
+	<!-- Text to be used in Tutorials dialog box -->
+	<Text>Scrolling_Shooter_Part1</Text>
+	<!-- GMZ to be used as template -->
+	<GMZ>ScrollingShooter_Part1.gmz</GMZ>
+	<Parent>Beginner</Parent>
+</entries>

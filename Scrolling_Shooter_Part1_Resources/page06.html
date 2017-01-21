@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>GameMaker Tutorial</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=9" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="style" charset="utf-8"/>
+	</head>
+<body>
+
+<h1>Tutorial</h1>
+<h3><i>Page 6 of 9</i></h3>
+
+<h2>The Player Plane</h2>
+
+Now that the scrolling background is ready it is time to make the plane that the player will control. You'll be surprised by just how simple this is going to be!
+<br>
+<br>
+
+First of all we need a sprite for the plane, and to give some life to the sprite, our plane will be animated to give the propellers the illusion of rotating. For this we use a sprite consisting of three images that are 
+exactly the same except for the propellers (this image can be found as <tt>myplane_strip3.png</tt> in the "Scrolling Shooter Assets" folder):
+<br>
+<br>
+
+<img class="center" src="myplane_strip3.png">
+<br>
+
+Note the naming of this file. You can load any PNG image into <i>Gamemaker: Studio</i>, but only those that have a file name that ends with <b>_stripXX</b> will be loaded directly into the programme with 
+the sub-images (individual parts of the sprite) split for you. this is defined by the <b>_stripXX</b> part, where the XX indicates the number of sub-images contained in the sprite. If your sprite is a simple strip 
+image, or a grid of images, then you will have to set the offset and size of each sub-image manually.
+<br>
+<br>
+
+Name the sprite "<i>spr_MyPlane</i>" and set the <b>X</b> and <b>Y</b> of the <b>Origin</b> to 32. This means that the origin of the sprite is the centre of the plane, so whenever we later set the plane 
+at a position or test the position, we mean the position of the centre of the plane, not the top-left point, which is normally used as the origin. This is important to make sure that, for example, bullets come from 
+the centre of the plane, and not from one single side.
+<br>
+<br>
+
+Next we add a new object and call it <b>obj_Myplane</b>. As a sprite for this object you should choose the plane sprite we just added, and you should give it a depth of –100 to make sure that it lies above 
+the bullets, islands, etc... that we will have in our game (dealing with the depth property in an effective way is very important for many games, so you should experiment to make sure you understand how it 
+works).
+<br>
+<br>
+ 
+To help you understand the D'n'D actions that we are going to use, let's just take a moment to think about what we want our player plane to actually do... When the player does nothing, we don't want the plane 
+to move (remember, the background moves, not the plane!). If the player presses one of the four <i>arrow</i> keys the plane should move in the appropriate direction. Our main concern is to avoid the plane moving 
+outside the room, and to resolve this, will control the position of the plane directly, rather than give it a speed like the islands.
+<br>
+<br>
+
+Written like that it may seem a bit complicated, but you'll be pleased to know that <i>GameMaker: Studio</i> makes complex tasks like this very simple, so let's get started and look at the movement for one key 
+first...
+
+<h2>Moving</h2>
+
+To start with let's look at the <i>left</i> arrow key. In the <b>Events</b> list of the object "<i>obj_MyPlane</i>" add a new <b>Keyboard Event</b> (the normal one, not the Pressed, nor the Released event) 
+for the &lt;Left&gt; key. Now, since we don't want the player plane to be able to fly out of the screen the first thing we need to do is check the current "<tt>x</tt>" (horizontal) position and only if it is greater than 
+the left edge of the room, permit the plane to move.
+<br>
+<br>
+
+Add a "<b>Test Variable</b>" action to this event, and in that we check to see if the "x" position is larger than 40, like this:
+
+<img class="center" src="6_1.png">
+<br>
+
+With that done, we need to add another action to move the plane if the above check returns <tt>true</tt>. For this we use the "<b>Jump to Position</b>" action to move relative –4 pixels along the x axis and along 
+the y. Don't forget to check the box labelled <b>Relative</b>, otherwise you will not be subtracting 4 from the current x position, but rather you will be setting the x position to 4!
+
+<img class="center" src="6_2.png">
+<br>
+
+For the right arrow we need to do a similar thing, but instead of creating a new event and adding D'nD, we are simply going to duplicate the <i>Left</i> Arrow Event and then tweak the values. For that, 
+<i>right-click</i> the Left Arrow Event, and select "<i>Duplicate Event</i>", which will bring up the event selector where you need to choose the <i>Right</i> arrow <b>Keyboard Event</b>. This will duplicate 
+the event and all it's actions.
+<br>
+<br>
+
+Now, <i>double-click</i> on the "<b>Test Variable</b>" action and change the check to "if x is less than room_width - 40", then change the "<b>Jump To Position</b>" action to jump relative to an x of +4 and 
+y of 0.
+
+<img class="center" src="6_3.png">
+<br>
+
+We need to do the same for the vertical movement too, so duplicate (or add) events for the <i>Up</i> and </>down</i> arrow keys, change the checks to check the y position along the vertical axis, and then and 
+set the x values to 0, and the y value to -4 for the up arrow, and 3 for the down arrow. The image below shows the final list of events:
+
+<img class="center" src="6_4.png">
+<br>
+
+Our plane can fly now! Place one instance of the plane in the room and run the game now... You should get the illusion of flying above the sea and the plane should respond to the key presses.
+<br>
+<br>
+
+<br>
+<br>
+<p>
+
+<h5>&copy; Copyright YoYo Games Ltd. 2015 All Rights Reserved</h5></body>
+</html>

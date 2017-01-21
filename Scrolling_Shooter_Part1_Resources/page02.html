@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>GameMaker Tutorial</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=9" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="style" charset="utf-8"/>
+	</head>
+<body>
+
+<h1>Tutorial</h1>
+<h3><i>Page 2 of 9</i></h3>
+
+<h2>Variables</h2>
+
+Before we will actually create the scrolling shooter game we need to delve a bit into an important concept of GameMaker: Studio, the use of <b>variables</b>. This simple concept will provide a very powerful 
+mechanism to enable much more interesting game play. So what is a variable? It can best be seen as a property of an instance of an object. Let's explain that in a bit more detail...
+<br>
+<br>
+
+As you should know, there are certain properties we can indicate when we define an object, for example we can set whether it is <i>visible</i> or whether it is <i>solid</i>. There are also a number of actions 
+that change these, and other, properties. For example there is an action to change the position or the speed of the instance.
+<br>
+<br>
+
+Each instance has a number of such properties, and there are also a number of <b>global</b> properties, like the score, that are not related to individual objects, but that are accessible by all of them. All 
+properties are stored in so-called <b>variables</b> that have a name. Here are some of the properties/variables that each <i>instance</i> has:
+<br>
+<br>
+
+<ul>
+	<li><b>x</b>: the x coordinate of the instance<br><br>
+	<li><b>y</b>: the y coordinate of the instance<br><br>
+	<li><b>hspeed</b>: horizontal speed (in pixels per step)<br><br>
+	<li><b>vspeed</b>: vertical speed (in pixels per step)<br><br>
+	<li><b>direction</b>: current direction of motion in degrees, 0 being right, and going anticlockwise to 360 being right again<br><br>
+	<li><b>speed</b>: the current speed in this direction<br><br>
+	<li><b>visible</b>: whether the object is visible (1, or true) or invisible (0, or false)<br><br>
+	<li><b>solid</b>: whether the object is solid (1, or true) or not (0, or false)
+</ul>
+		
+And here are some <i>global</i> variables:
+<br>
+<br>
+
+<ul>
+	<li><b>score</b>: the current value of the score<br><br>
+	<li><b>lives</b>: the current number of lives<br><br>
+	<li><b>health</b>: the current health of the player (defaults to 100)<br><br>
+	<li><b>mouse_x</b>: the x coordinate of the mouse<br><br>
+	<li><b>mouse_y</b>: the y coordinate of the mouse<br><br>
+	<li><b>room_speed</b>: current speed (FPS) of the room in steps per second<br><br>
+	<li><b>room_caption</b>: caption shown in the window title<br><br>
+	<li><b>room_width</b>: width of the room in pixels<br><br>
+	<li><b>room_height</b>: height of the room in pixels
+</ul>
+
+There are many, many more variables, both of an instance scope, and a global scope (scope is simply a way saying "area of effect"). All of them can be found in the <i>GameMaker</i> documentation which you can 
+open by pressing &lt;F1&gt;. There are actions which manipulate the value of certain variables too, but, as we will see, you can also manipulate them directly. What is better, you can define your own variables and 
+use these in your games as well.
+<br>
+<br>
+
+For example, as we will see in the subsequent pages, we want our plane to be able to shoot only once every five steps of the game, so our plane needs a variable to indicate whether it can shoot or not. We use a 
+variable for this property that we will call "<tt>can_shoot</tt>". "<tt>can_shoot</tt>" is its <i>variable name</i> and is just a way of identifying information for your game to use.
+
+<blockquote>
+	<i><b>NOTE: </b>A variable name can only consist of letters and the underscore symbol, and variable names are <b>case-sensitive</b>, so "<tt>Can_Shoot</tt>" is not the same variable as 
+	"<tt>can_shoot</tt>".</i>
+</blockquote>
+
+In the Create Event of the plane we will set this variable to <tt>true</tt>, which is a <b>boolean</b> value (boolean values can only ever be <tt>true</tt> or <tt>false</tt>), and when the player wants to fire 
+a shot we check the value of the variable to see whether this is allowed. Whenever a shot is fired we set the variable to <tt>false</tt>, indicating that shooting is temporarily not allowed.
+<br>
+<br>
+
+But how will we permit the player to shoot again? We will use an Alarm Event to set the variable back to <tt>true</tt> after five steps have passed, and in this way our variable is acting like a switch, where we set it 
+to <tt>false</tt> on shooting, then your game sets it to <tt>true</tt> again after a few steps, then the player sets it to <tt>false</tt> again, etc... The next pages will describe this in more detail, so don't worry 
+if it seems a bit confusing just now, as you'll get more details instructions later!
+<br>
+<br>
+
+<br>
+<br>
+<p>
+
+<h5>&copy; Copyright YoYo Games Ltd. 2015 All Rights Reserved</h5></body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>GameMaker Tutorial</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=9" />
+	<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="style" charset="utf-8"/>
+</head>
+<body>
+
+<h1>Tutorial</h1>
+<h3><i>Page 8 of 9</i></h3>
+
+<h2>Enemies</h2>
+
+Let's now make the first enemy in our game. It will be a simple enemy, that flies down the screen without shooting, but if it collides with the player plane the game will end. For this we need another sprite, 
+so create one now, call it "<i>spr_Enemy1</i>" and load the image "enemy1_strip3.png". like the player plane, set its origin to the centre.
+<br>
+<br>
+
+Now create a new object ("<i>obj_Enemy1</i>"), give it a <b>Create Event</b> and set the vertical speed to 4 to make the plane fly downwards faster than the background is scrolling. When the plane reaches 
+the bottom of the room we will need to make it reappear at a random place at the top of the room. You should know how to do this, so add a <b>Step Event</b> now with the appropriate actions... and if you are 
+unsure, go back a few steps and look how we made the Islands move.
+<br>
+<br>
+
+We will need to define two <b>Collision Events</b> for the enemy plane too:
+<ul>
+	<li>the collision event with the bullet, which should destroy the enemy plane
+	<li>the collision event with the player controlled plane which should destroy both planes and end the game
+</ul>
+
+but, before we go ahead with these collisions, we should prepare the explosion effect.
+
+<h2>Explosions</h2>
+
+For the explosion effect, we will need a sound effect, a sprite and another object. Click with the <i>right mouse button</i> on the "Sounds" folder in the resource tree and select "<i>Add Sound</i>". Browse 
+to the "Scrolling Shooter Assets" folder and select the file "<i>snd_explosion1.wav</i>" and save it as <i>snd_Explosion1</i>, then create a new sprite (call it <i>spr_Explosion1</i>) and load in the sprite 
+"<i>explosion1_strip6.png</i>", setting the origin to the centre before saving.
+<br>
+<br>
+
+We will need another new object, so create it now and call it "<i>obj_Explosion1</i>", and assign it the sprite you just created, as well as a <b>Create Event</b>. In this event, drag a <b>Play Sound</b> 
+action from the <i>Main1</i> tab, and make it play our new explosion sound without looping. Finally, we are going to add a new event to this object... the <b>Animation End</b> event.
+
+<img class="center" src="8_3.png">
+<br>
+
+When you are dealing with sprites that are animated, this event will be triggered every time the animation reaches the last image index (the last sub-image of the sprite). So, for example, our explosion sprite 
+has 6 sub-images numbered from 0 to 5. When <i>GameMaker: Studio</i> draws the sprite, it will draw one frame of the animation every step (by default, although this can be changed) so, after 5 steps it reaches 
+the image index 5, and triggers the <b>Animation End</b> event once. This is the perfect place to destroy the instance of the object since we only want to show the explosion once, so go ahead and add an 
+<b>Animation End</b> event now with a <b>Destroy instance</b> action (from the <i>Main1</i> tab).
+<br>
+<br>
+
+Save our explosion object now, and open up the enemy plane object again.
+
+<h2>Collision With Bullets</h2>
+
+We can now go ahead and add our <b>Collision Events</b>. The first should be with the object <i>obj_Player_Bullet</i>, so add that now.
+
+<img class="center" src="8_2.png">
+<br>
+
+In this event, create an instance of the explosion object at (0,0) relative to the enemy plane we have just made, and also add a <b>Jump To Position </b> action, as we want to move the plane outside of the 
+room and to a random position along the x axis (as we did for the islands). Now, we could add a collision event into the bullet object too to destroy it, but since we already have a collision between the enemy and 
+the bullet we might as well use it!
+<br>
+<br>
+
+Drag a <b>Destroy Instance</b> action into the event, but this time change the section at the top of the action (where it says "Applies to") from <i>Self</i> to <i>Other</i>. In <i>GameMaker</i>, 
+the word <i>Other</i> is a special <b>keyword</b> which is used in the collision event to indicate that the action must happen to the "other" instance in the collision. In this case the "other" instance is the 
+bullet object, so we are moving the enemy plane and destroying the bullet in the same event.
+<br>
+<br>
+
+The event should look like this:
+
+<img class="center" src="8_1.png">
+<br>
+
+<h2>Collision With The Player</h2>
+
+Next we need to handle the collision with the player plane. Again we will need an explosion sprite (a bit bigger this time) and an exploding sound (a bit louder this time). Create a new sound, call it 
+<i>snd_Explosion2</i>. Load the second explosion WAV file from the "Scrolling Shooter Assets" folder and save it. Now, add a new sprite, call it <i>spr_Explosion2</i> and load the sprite strip for the larger 
+explosion from the assets folder and save.
+<br>
+<br>
+
+Make another new object and call it <i>obj_Explosion2</i>, assign it the sprite you just added and a <b>Create Event</b> in which we play the sound effect you just added too. We also need to add an 
+<b>Animation End</b> event, as we did for the other explosion, only this time we are going to make it do something slightly different...
+<br>
+<br>
+
+In this case, since this explosion only happens when the player plane is destroyed, we are going to show a message asking the player to try again, and then restart the game. There are actions for both these 
+things which can be found on <i>Main2</i> tab, so add them no into the <b>Animation End</b> event of the explosion, and have the message say something like "You died! Press Okay to try again". It should 
+look like this now:
+
+<img class="center" src="8_4.png">
+<br>
+
+You can close this object now, and open the <i>obj_Enemy1</i> again. Add a <b>Collision Event</b> with the player plane instance with an action to create an instance of <i>obj_Explosion1</i> at (0, 0) 
+relative to the enemy plane, then add a <b>Change Instance</b> action from the <i>Main1</i> tab, in the <i>Objects</i> section. In this case we want it to affect the "other" instance (ie: the player plane) 
+so change the "Applies to" part to <i>other</i>, then have it "change into" the new explosion object, <i>obj_Explosion2</i> and make sure that the section "Perform Events" is set to "yes". Basically, when 
+changing instances in this way, you can have them perform their Create and Destroy events or not. In this case we want them to be performed since our explosion object plays a sound when the instance is 
+created.
+<br>
+<br>
+
+The final thing to do here is to add a <b>Jump To Position</b> action to move the enemy plane back out the room ready to fight again.
+<br>
+<br>
+
+<img class="center" src="8_5.png">
+<br>
+
+<br>
+<br>
+<p>
+
+<h5>&copy; Copyright YoYo Games Ltd. 2015 All Rights Reserved</h5></body>
+</html>

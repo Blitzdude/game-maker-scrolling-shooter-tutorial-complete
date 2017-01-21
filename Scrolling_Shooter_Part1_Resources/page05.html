@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>GameMaker Tutorial</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=9" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="style" charset="utf-8"/>
+	</head>
+<body>
+
+<h1>Tutorial</h1>
+<h3><i>Page 5 of 9</i></h3>
+
+<h2>Scrolling Islands</h2>
+
+To enhance the feeling of motion we are going to add a few islands to the sea. An easy way would be to create a larger background image and add the island to this background, then simply tile and scroll <i>that</i>. 
+The disadvantage of this approach is that the islands will appear in a regular pattern, which the player will soon notice and get tired of (you might have seen this in cartoons where there is a repeating scrolling 
+background behind a running character).
+<br>
+<br>
+
+To avoid this and try to keep things interesting for the player, we will choose a slightly more complicated approach and add the islands as instances into the room, each one at a random position. So first, create three 
+sprites with the following images from your "Scrolling Shooter Assets" folder:
+<br>
+<br>
+
+<center><img src="island1.png"><img src="island2.png"><img src="island3.png"></center>
+
+<blockquote>
+	<i><b>NOTE: </b>Can't remember how to add a sprite? It's the same process for all resources... right-click the resources folder, click "Add &lt;resource&gt;", select the resource from the file explorer and then 
+	close the window to save it. Don't forget to give your resources meaningful names!</i>
+</blockquote>
+
+<br>
+Name your sprites "<i>spr_Island1</i>", "<i>spr_Island2</i>", and "<i>spr_Island3</i>". As we will never use them for collision checking, it's best to ensure that <b>Precise collision checking</b> is unchecked in 
+the Sprite Properties window before you save them, as this will improve the speed the game runs, and the origin of the sprite needs to be at the default (0,0) position.
+<br>
+<br>
+
+For each of the islands we will create an object, and then create instances of these objects in the actual room. In the <b>Create Event</b> of these objects we will give a vertical speed that is the same as the 
+scrolling speed of the background, and in this way it will look as if the islands are part of the background because they stay at the same position with respect to the scrolling sea.
+<br>
+<br>
+
+<h2>Creating The Island Objects</h2>
+
+Create a single new object right now, and call it "<i>obj_Island1</i>", and assign it the sprite "<i>spr_Island1</i>". We now need to add the movement for the island, so add a <b>Create Event</b> to the 
+object and in it add the "<b>Vertical Speed</b>" D'n'D action from the <b>Move</b> tab. Set the <i>vert. speed</i> value to 2 (the same as the room background speed) and then click "OK" to finish. The 
+instances of the island objects will now scroll down with the background, since they both move at 2 pixels per step.
+<br>
+<br>
+
+<img class="center" src="5_1.png">
+<br>
+
+To make sure that all other objects will appear "above" the islands we give the island objects a <b>Depth</b> of 10000. Instances of objects are drawn in the order of the depth, with the instances at the highest 
+depth being drawn first, and the instances with lowest depth being drawn on top of them. So by giving the islands a high depth they will always be drawn first and lie below the other objects in the game.
+<br>
+<br>
+
+One more thing needs to be done. When the island disappears below the bottom of the room we want to make it reappear at the top. To do this, in the <b>Step</b> event of the island we will test whether the 
+island disappeared below the screen and, if so, let it reappear at the top. To do this we need the "y" position (height) of the instance in the room, and the variable <b>y</b> will return just that. This variable is 
+one of the built-in variables that all instances have (a value of 0 corresponds to the top of the room).
+<br>
+<br>
+
+We will also need to use the variable <b>room_height</b>. This is a built in variable too, but is <i>global</i> in scope and returns the number of pixels high that the current room is. What we will do is check if the 
+the island disappears below the bottom of the room by comparing the island instance "y" value with the <b>room_height</b>, and if it is larger we will move it.
+<br>
+<br>
+
+<h2>Loop The Islands</h2>
+
+To start programming the islands, in "<i>obj_Island1</i>" add a <b>Step Event</b>. In this event we are going to the check and change position, so the first thing you need is the "<b>Test Variable</b>" action 
+we can use the action to test variable values to see whether the island lies below the room:
+<br>
+<br>
+
+<img class="center" src="5_2.png">
+<br>
+
+As you can see, as a value you can use another variable name, in this case the <i>global</i> variable "<tt>room_height</tt>", but you can use instance variables or even mathematical expressions here. So this 
+action will return <tt>true</tt> if the y position of the instance is greater than the room height. When <tt>true</tt> is returned, the next action below the test action is performed (or the next block of actions, but 
+more about this later).
+<br>
+<br>
+
+So what action do we need now? To move to the top of the room we use the action "<b>Jump to position</b>", and as we want to jump to a random position along the x axis of the room and not the same x position, 
+we need to tell this action so by using a <b>function</b>.
+<br>
+<br>
+
+The function we are going to use is <tt>random()</tt>. What is a function you might ask? A function computes a value (or performs an action) based on the value of certain <i>arguments</i>. The <i>argument(s)</i> 
+are written between the brackets after the function name, and functions are what you will mainly use when you start to use code instead of use D'n'D to create your games. Note for now though, that almost everywhere 
+where you can type in values you can also use functions and variables (and expressions involving these).
+<br>
+<br>
+
+In the jump action we use <tt>random(room_width)</tt> as the x-coordinate. This will create a random value between 0 and the width of the room, so the jump action will look as follows:
+<br>
+<br>
+
+<img class="center" src="5_3.png">
+<br>
+
+We use –65 for the y-position to make sure the island starts completely outside the top of the room (remember that room coordinates start at (0,0) with a positive value moving down the room and a negative value 
+moving up the room), but since we set the vertical speed to +2, it will move into sight again.
+<br>
+<br>
+
+Now, we need three island objects for our game, one for each sprite. however to save time, there is no need to create two new objects, as we can simply <b>duplicate</b> the object "<i>obj_Island1</i>", 
+creating a copy of this object which we can rename and assign a different sprite to while maintaining all the D'n'D that we have already added. To do this, <i>right-click</i> on the object and select the "duplicate" 
+option to copy this object as a new one. Name this new object "<i>obj_Island2</i>" and change its sprite, then do the same again to create "<i>obj_Island3</i>".
+<br>
+<br>
+
+All that remains to be done is to place three islands at different heights in the room, so open up the room editor again and add one of each into the room at different height. We are now done with our scrolling 
+background, so give your game a quick test to see that all works as it should.
+<br>
+<br>
+
+Even though the islands reappear at regular moments, because the position is different, the player will not really notice that they are the same. You could also have added some irregularity 
+in the moment the islands appear by also setting a (negative) random value for the y-coordinate.
+<br>
+<br>
+
+<br>
+<br>
+<p>
+
+<h5>&copy; Copyright YoYo Games Ltd. 2015 All Rights Reserved</h5></body>
+</html>

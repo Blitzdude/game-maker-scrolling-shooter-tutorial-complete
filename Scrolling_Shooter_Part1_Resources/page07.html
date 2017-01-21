@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>GameMaker Tutorial</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=9" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="style" charset="utf-8"/>
+	</head>
+<body>
+
+<h1>Tutorial</h1>
+<h3><i>Page 7 of 9</i></h3>
+
+<h2>Creating A Bullet</h2>
+
+But what is a scrolling shooter if you cannot shoot and there are no enemies? We are now going to extend this game so that your player can blast away at enemy planes and have some real fun while doing it! 
+<br>
+<br>
+
+To start with, we are going to make the "canon" on the player plane so that it can shoot. For that we need a bullet sprite, which you can create (call it "<i>spr_Player_Bullet</i>") now, loading the sprite from the 
+"Scrolling Shooter Assets" folder and put its origin in the centre as we did for the player plane.
+<br>
+<br>
+
+<img class="center" src="bullet.png">
+<br>
+
+Now create a new object, call it "<i>obj_Player_Bullet</i>" and assign it this sprite. We will leave it with the default depth of 0 so that it will appear <i>below</i> the plane but <i>above</i> the islands. This 
+object will have a rather simple behaviour - in the <b>Create</b> event we will give it a vertical speed of "–8" to make it move upwards, and to avoid more and more bullets flying around we must destroy it once 
+it leaves the room (as even if it's not visible on the screen, it still exists unless explicitly destroyed).
+<br>
+<br>
+
+Go ahead and add a <b>Create Event</b> now with the appropriate action (use the "<b>Set Vertical Speed</b>" action, set to -8), then in the <b>Step Event</b> we need to test whether the variable "y" is less 
+than –16 and if it is, we should destroy the instance. You should by now know how to do this by now, so go ahead and add this event and action, and check with the image below to make sure that you have it all correct.
+
+<img class="center" src="7_1.png">
+<br>
+
+
+<h2>Shooting</h2>
+
+The bullet needs to be fired when the user presses the &lt;Space&gt; key. As in most shooters the plane should keep on firing bullets as long as the key is pressed, but we don't want too many bullets at the same 
+moment as this would make the game far too easy.
+<br>
+<br>
+
+Therefore, we want to allow the player to fire only two bullets every second, that is, one bullet every 15 game steps (the room speed is 30, which is 30 steps every second, so if we want something to occur twice every 
+second, we need to divide the room speed by 2). To achieve this we will use a variable in our plane object - <tt>can_shoot</tt>. In the <b>Create Event</b> event of the object "<i>obj_MyPlane</i>" (open 
+the object now and add this event) we will initialise this variable for the instance and set it's value to <tt>true</tt>, indicating that we can indeed shoot a bullet, using the <b>Set Variable</b> action:
+<br>
+<br>
+
+<img class="center" src="7_2.png">
+<br>
+
+You know how to at <b>Keyboard Events</b>, so now add one to the player plane object for &lt;Space&gt;. in this event we need to test whether the variable <tt>can_shoot</tt> is equal <tt>true</tt>, and 
+if it is we need to create a bullet just in front of the ship, set <tt>can_shoot</tt> to <tt>false</tt> and also set an alarm to run in 15 steps. The alarm events are 12 special events that are simply built-in 
+counters for your game, where you set the alarm to a value (like 15) and it will count that value down, 1 step at a time, until it reaches 0 at which point it will run any code or D'n'D actions within the alarm event.
+<br>
+<br>
+
+So, in our &lt;Space&gt; event, add a <b>Test variable</b> action and check <tt>can_shoot</tt> to see if it is <tt>true</tt>. Since we need to perform various actions, and not just one, if this check evaluates 
+to <tt>true</tt>, we need to indicated to <i>GameMaker</i> that a whole "block" of actions should be performed. This is done using the "block" actions from the <i>Other</i> section of the <b>Control</b> tab:
+
+<img class="center" src="7_3.png">
+<br>
+
+The "up" arrow is an <b>Open Block</b> and the "down" arrow is a <b>Close Block</b>, and everything that is enclosed within them will be run at once if the initial condition is <tt>true</tt>. Add an <b>Open 
+Block</b> action now, then use <b>Set Variable</b> to set <tt>can_shoot</tt> to <tt>false</tt>. Next, add a <b>Create Instance</b> action (from the <i>Main1 tab</i>) and set it to create an instance of 
+the object "<i>obj_Player_Bullet</i>", and set the x and y values to 0, <i>but</i> mark "relative", as that will create the instance at the same position as the player plane instance.
+<br>
+<br>
+
+Finally, we need to add an action to set the <b>Alarm Event</b>. You can find this in the <i>Main2</i> tab, so drag one into the action list and set alarm number 0 to 15, as we mentioned earlier. You need to 
+add a <b>Close Block</b> now, as every <b>Open Block</b> needs its corresponding closure otherwise <i>GameMaker: Studio</i> will give an error. the final event should look like this:
+
+<img class="center" src="7_4.png">
+<br>
+
+Note that you can easily change the rate of fire by changing the value of the alarm in this event, or you could set a variable to hold the alarm value and then change it if the player collides with a power-up object.
+<br>
+<br>
+
+We need to add one final event to the player object, otherwise they will only be able to shoot once in the whole game... Add an <b>Alarm0 Event</b> to the object and in it set the <tt>can_shoot</tt> variable 
+to <tt>true</tt> again. With that done you can test your game and you should be able to shoot bullets, 2 every second, when you hold down the &lt;Space&gt; key.
+<br>
+<br>
+
+<br>
+<br>
+<p>
+
+<h5>&copy; Copyright YoYo Games Ltd. 2015 All Rights Reserved</h5></body>
+</html>
